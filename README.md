@@ -7,6 +7,11 @@ A Model Context Protocol (MCP) server for the CKAN API that enables browsing and
 
 This is an MCP server that provides access to CKAN (Comprehensive Knowledge Archive Network) APIs through the Model Context Protocol. It can be used with MCP-compatible clients like Claude Desktop, IDEs, or other AI applications to interact with CKAN data portals.
 
+## Requirements
+
+- Python 3.8 or higher
+- pip (Python package installer)
+
 ## Installation
 
 1. Install Python dependencies:
