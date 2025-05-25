@@ -1,62 +1,62 @@
 
 # CKAN MCP Server
 
-Ein Model Context Protocol (MCP) Server für die CKAN API, der es ermöglicht, CKAN-Datenportale über MCP-kompatible Clients zu durchsuchen und zu verwalten.
+A Model Context Protocol (MCP) server for the CKAN API that enables browsing and managing CKAN data portals through MCP-compatible clients.
 
 ## Installation
 
-1. Python-Abhängigkeiten installieren:
+1. Install Python dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-## Konfiguration
+## Configuration
 
-Setzen Sie die folgenden Umgebungsvariablen:
+Set the following environment variables:
 
-- `CKAN_URL`: Die Basis-URL Ihres CKAN-Portals (z.B. `https://demo.ckan.org`)
-- `CKAN_API_KEY`: (Optional) Ihr CKAN API-Schlüssel für Schreiboperationen
+- `CKAN_URL`: The base URL of your CKAN portal (e.g. `https://demo.ckan.org`)
+- `CKAN_API_KEY`: (Optional) Your CKAN API key for write operations
 
-Beispiel:
+Example:
 ```bash
 export CKAN_URL="https://demo.ckan.org"
 export CKAN_API_KEY="your-api-key-here"
 ```
 
-## Verwendung
+## Usage
 
-Server starten:
+Start the server:
 ```bash
 python mcp_ckan_server.py
 ```
 
-## Verfügbare Tools
+## Available Tools
 
-Der MCP-Server stellt folgende Tools zur Verfügung:
+The MCP server provides the following tools:
 
 ### Packages/Datasets
-- `ckan_package_list`: Liste aller Packages
-- `ckan_package_show`: Details eines spezifischen Packages
-- `ckan_package_search`: Suche nach Packages
+- `ckan_package_list`: List all packages
+- `ckan_package_show`: Show details of a specific package
+- `ckan_package_search`: Search for packages
 
-### Organisationen
-- `ckan_organization_list`: Liste aller Organisationen
-- `ckan_organization_show`: Details einer Organisation
+### Organizations
+- `ckan_organization_list`: List all organizations
+- `ckan_organization_show`: Show organization details
 
-### Gruppen und Tags
-- `ckan_group_list`: Liste aller Gruppen
-- `ckan_tag_list`: Liste aller Tags
+### Groups and Tags
+- `ckan_group_list`: List all groups
+- `ckan_tag_list`: List all tags
 
-### Ressourcen
-- `ckan_resource_show`: Details einer Ressource
+### Resources
+- `ckan_resource_show`: Show resource details
 
 ### System
-- `ckan_site_read`: Site-Informationen
-- `ckan_status_show`: Status und Versionsinformationen
+- `ckan_site_read`: Site information
+- `ckan_status_show`: Status and version information
 
-## Beispiele
+## Examples
 
-### Package suchen
+### Search packages
 ```json
 {
   "tool": "ckan_package_search",
@@ -68,7 +68,7 @@ Der MCP-Server stellt folgende Tools zur Verfügung:
 }
 ```
 
-### Organisation anzeigen
+### Show organization
 ```json
 {
   "tool": "ckan_organization_show",
@@ -79,7 +79,7 @@ Der MCP-Server stellt folgende Tools zur Verfügung:
 }
 ```
 
-### Alle Tags auflisten
+### List all tags
 ```json
 {
   "tool": "ckan_tag_list",
@@ -87,17 +87,17 @@ Der MCP-Server stellt folgende Tools zur Verfügung:
 }
 ```
 
-## Ressourcen
+## Resources
 
-Der Server stellt auch folgende Ressourcen zur Verfügung:
-- `ckan://api/docs`: API-Dokumentation
-- `ckan://config`: Server-Konfiguration
+The server also provides the following resources:
+- `ckan://api/docs`: API documentation
+- `ckan://config`: Server configuration
 
-## CKAN API Referenz
+## CKAN API Reference
 
-Dieser MCP-Server implementiert die wichtigsten Endpoints der CKAN API v3. 
-Vollständige Dokumentation: https://docs.ckan.org/en/latest/api/
+This MCP server implements the main endpoints of the CKAN API v3. 
+Complete documentation: https://docs.ckan.org/en/latest/api/
 
-## Lizenz
+## License
 
 MIT License
