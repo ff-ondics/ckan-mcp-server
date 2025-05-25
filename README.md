@@ -1,73 +1,103 @@
-# Welcome to your Lovable project
 
-## Project info
+# CKAN MCP Server
 
-**URL**: https://lovable.dev/projects/25cbb6e8-a0a1-417f-b927-11335948e153
+Ein Model Context Protocol (MCP) Server für die CKAN API, der es ermöglicht, CKAN-Datenportale über MCP-kompatible Clients zu durchsuchen und zu verwalten.
 
-## How can I edit this code?
+## Installation
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/25cbb6e8-a0a1-417f-b927-11335948e153) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1. Python-Abhängigkeiten installieren:
+```bash
+pip install -r requirements.txt
 ```
 
-**Edit a file directly in GitHub**
+## Konfiguration
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Setzen Sie die folgenden Umgebungsvariablen:
 
-**Use GitHub Codespaces**
+- `CKAN_URL`: Die Basis-URL Ihres CKAN-Portals (z.B. `https://demo.ckan.org`)
+- `CKAN_API_KEY`: (Optional) Ihr CKAN API-Schlüssel für Schreiboperationen
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Beispiel:
+```bash
+export CKAN_URL="https://demo.ckan.org"
+export CKAN_API_KEY="your-api-key-here"
+```
 
-## What technologies are used for this project?
+## Verwendung
 
-This project is built with:
+Server starten:
+```bash
+python mcp_ckan_server.py
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Verfügbare Tools
 
-## How can I deploy this project?
+Der MCP-Server stellt folgende Tools zur Verfügung:
 
-Simply open [Lovable](https://lovable.dev/projects/25cbb6e8-a0a1-417f-b927-11335948e153) and click on Share -> Publish.
+### Packages/Datasets
+- `ckan_package_list`: Liste aller Packages
+- `ckan_package_show`: Details eines spezifischen Packages
+- `ckan_package_search`: Suche nach Packages
 
-## Can I connect a custom domain to my Lovable project?
+### Organisationen
+- `ckan_organization_list`: Liste aller Organisationen
+- `ckan_organization_show`: Details einer Organisation
 
-Yes, you can!
+### Gruppen und Tags
+- `ckan_group_list`: Liste aller Gruppen
+- `ckan_tag_list`: Liste aller Tags
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Ressourcen
+- `ckan_resource_show`: Details einer Ressource
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### System
+- `ckan_site_read`: Site-Informationen
+- `ckan_status_show`: Status und Versionsinformationen
+
+## Beispiele
+
+### Package suchen
+```json
+{
+  "tool": "ckan_package_search",
+  "arguments": {
+    "q": "climate data",
+    "rows": 5,
+    "sort": "score desc"
+  }
+}
+```
+
+### Organisation anzeigen
+```json
+{
+  "tool": "ckan_organization_show",
+  "arguments": {
+    "id": "sample-organization",
+    "include_datasets": true
+  }
+}
+```
+
+### Alle Tags auflisten
+```json
+{
+  "tool": "ckan_tag_list",
+  "arguments": {}
+}
+```
+
+## Ressourcen
+
+Der Server stellt auch folgende Ressourcen zur Verfügung:
+- `ckan://api/docs`: API-Dokumentation
+- `ckan://config`: Server-Konfiguration
+
+## CKAN API Referenz
+
+Dieser MCP-Server implementiert die wichtigsten Endpoints der CKAN API v3. 
+Vollständige Dokumentation: https://docs.ckan.org/en/latest/api/
+
+## Lizenz
+
+MIT License
