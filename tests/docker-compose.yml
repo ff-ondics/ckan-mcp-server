@@ -1,13 +1,14 @@
 services:
   ckan-mcp-server:
     build: .
+    env_file: .env
     environment:
       - CKAN_URL=${CKAN_URL}
       - CKAN_API_KEY=${CKAN_API_KEY}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
     volumes:
-      - .:/app
-    working_dir: /app
-    command: python mcp_ckan_server.py
+      - ../:/app/lib
+    # working_dir: /app
+    # command: python mcp_ckan_server.py
     stdin_open: true
     tty: true

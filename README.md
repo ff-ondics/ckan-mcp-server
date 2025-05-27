@@ -155,4 +155,8 @@ Complete documentation: https://docs.ckan.org/en/latest/api/
 
 ## License
 
-MIT License
+Mozilla Public License Version 2.0
+
+## Author
+
+(C) 2025, Ondics GmbH, https://ondics.de
