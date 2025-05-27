@@ -6,6 +6,7 @@ services:
       - CKAN_URL=${CKAN_URL}
       - CKAN_API_KEY=${CKAN_API_KEY}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
     volumes:
       - ../:/app/lib
     # working_dir: /app

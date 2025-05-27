@@ -15,6 +15,16 @@ RUN apt-get update && apt-get install -y \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
+# Git-Directory erstellen, damit GIT-Agent arbeiten kann.
+WORKDIR /app/git-dir
+RUN echo "hallöle" > hallo.txt
+RUN git init && \
+    git add hallo.txt && \
+    git config user.name ondics && \
+    git config user.email info@ondics.de && \
+    git commit -m "initial commit" -a
+    
+
 WORKDIR /app
 
 COPY requirements.txt ./
