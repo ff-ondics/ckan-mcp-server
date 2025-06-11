@@ -2,8 +2,13 @@
 #!/usr/bin/env python3
 
 import asyncio
+
 import json
 import logging
+import os
+import pprint
+import ssl
+import certifi
 from typing import Any, Dict, List, Optional, Union
 from urllib.parse import urljoin
 import aiohttp
@@ -11,9 +16,13 @@ from mcp.server.models import InitializationOptions
 import mcp.types as types
 from mcp.server import NotificationOptions, Server
 import mcp.server.stdio
+from dotenv import load_dotenv
 
+
+load_dotenv()
+os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO,filename="mcp-ckan-server.log")
 logger = logging.getLogger("mcp-ckan-server")
 
 class CKANAPIClient:
@@ -25,7 +34,8 @@ class CKANAPIClient:
         self.session = None
     
     async def __aenter__(self):
-        self.session = aiohttp.ClientSession()
+        ssl_context = ssl.create_default_context(cafile=certifi.where())
+        self.session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context))
         return self
     
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -47,9 +57,10 @@ class CKANAPIClient:
         headers = self._get_headers()
         
         try:
+            
             async with self.session.request(method, url, headers=headers, json=data) as response:
                 result = await response.json()
-                
+                logger.warn(result)
                 if not result.get('success', False):
                     error_msg = result.get('error', {})
                     raise Exception(f"CKAN API Error: {error_msg}")
@@ -72,7 +83,7 @@ async def handle_list_tools() -> List[types.Tool]:
     return [
         types.Tool(
             name="ckan_package_list",
-            description="Get list of all packages (datasets) in CKAN",
+            description="Get list of all packages (datasets) in CKAN (unsorted)",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -91,7 +102,7 @@ async def handle_list_tools() -> List[types.Tool]:
         ),
         types.Tool(
             name="ckan_package_show",
-            description="Get details of a specific package/dataset",
+            description="Get details of a specific package/dataset (like dates)",
             inputSchema={
                 "type": "object",
                 "properties": {

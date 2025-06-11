@@ -4,7 +4,7 @@
 # (C) Ondics GmbH
 #
 
-FROM python:3.13.3-slim-bookworm
+FROM python:3.13.4-slim-bookworm
 
 ENV TZ="Europe/Berlin"
 
@@ -15,21 +15,18 @@ RUN apt-get update && apt-get install -y \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
-# Git-Directory erstellen, damit GIT-Agent arbeiten kann.
-WORKDIR /app/git-dir
-RUN echo "hallöle" > hallo.txt
-RUN git init && \
-    git add hallo.txt && \
-    git config user.name ondics && \
-    git config user.email info@ondics.de && \
-    git commit -m "initial commit" -a
-    
 
-WORKDIR /app
 
-COPY requirements.txt ./
+WORKDIR /app/tests
+
+COPY tests/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY tests/ .
+COPY *.py /app/
+COPY *.txt /app/
+COPY *.md /app/
+COPY *.toml /app/
+COPY .env /app/
+CMD ["python", "test.py"]
 
-CMD ["python", "mcp_ckan_server.py"]

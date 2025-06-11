@@ -4,7 +4,7 @@
 # (C) Ondics GmbH
 #
 
-FROM python:3.13.3-slim-bookworm
+FROM python:3.13.4-slim-bookworm
 
 ENV TZ="Europe/Berlin"
 
@@ -30,5 +30,6 @@ COPY mcp_ckan_server.py .
 COPY requirements.txt .
 COPY pyproject.toml .
 COPY LICENSE .
+RUN pip install -r requirements.txt
 
 
