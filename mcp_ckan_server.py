@@ -28,11 +28,12 @@ logger = logging.getLogger("mcp-ckan-server")
 class CKANAPIClient:
     """CKAN API client for making HTTP requests"""
     
-    def __init__(self, base_url: str, api_key: Optional[str] = None):
+    def __init__(self, base_url: str, api_key: Optional[str] = None, basic_auth_username: Optional[str] = None, basic_auth_password: Optional[str] = None,):
         self.base_url = base_url.rstrip('/')
         self.api_key = api_key
         self.session = None
-    
+        self.basic_auth_username = basic_auth_username
+        self.basic_auth_password = basic_auth_password
     async def __aenter__(self):
         ssl_context = ssl.create_default_context(cafile=certifi.where())
         self.session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context))
@@ -57,8 +58,11 @@ class CKANAPIClient:
         headers = self._get_headers()
         
         try:
-            
-            async with self.session.request(method, url, headers=headers, json=data) as response:
+            auth = None
+            if self.basic_auth_username and self.basic_auth_password:
+                auth = aiohttp.BasicAuth(login=self.basic_auth_username,password=self.basic_auth_password)
+                
+            async with self.session.request(method, url, headers=headers, json=data,auth=auth) as response:
                 result = await response.json()
                 logger.warn(result)
                 if not result.get('success', False):
@@ -542,9 +546,11 @@ async def main():
         raise Exception("CKAN_URL environment variable is required")
     
     ckan_api_key = os.getenv("CKAN_API_KEY")
+    ckan_basic_auth_username = os.getenv("CKAN_BASIC_AUTH_USERNAME")
+    ckan_basic_auth_password = os.getenv("CKAN_BASIC_AUTH_PASSWORD")
     
     global ckan_client
-    ckan_client = CKANAPIClient(ckan_url, ckan_api_key)
+    ckan_client = CKANAPIClient(ckan_url, ckan_api_key,ckan_basic_auth_username,ckan_basic_auth_password)
     
     # Start the CKAN client session
     await ckan_client.__aenter__()
